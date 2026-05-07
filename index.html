@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Betel"/>
+<meta name="theme-color" content="#1565C0"/>
+<title>Iglesia Bautista Betel</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icon-192.png"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+  :root{
+    --color-background-primary:#ffffff;
+    --color-background-secondary:#f5f7fa;
+    --color-text-primary:#111827;
+    --color-text-secondary:#6b7280;
+    --color-text-tertiary:#9ca3af;
+    --color-border-primary:#e5e7eb;
+    --color-border-secondary:#d1d5db;
+    --color-border-tertiary:#e5e7eb;
+    --color-border-danger:#ef4444;
+    --color-text-danger:#dc2626;
+    --border-radius-md:8px;
+    --border-radius-lg:12px;
+    --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  @media(prefers-color-scheme:dark){
+    :root{
+      --color-background-primary:#1c1c1e;
+      --color-background-secondary:#2c2c2e;
+      --color-text-primary:#f2f2f7;
+      --color-text-secondary:#aeaeb2;
+      --color-text-tertiary:#636366;
+      --color-border-primary:#38383a;
+      --color-border-secondary:#3a3a3c;
+      --color-border-tertiary:#38383a;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{font-family:var(--font-sans);background:var(--color-background-secondary);color:var(--color-text-primary);padding:12px 12px 90px;max-width:600px;margin:0 auto;}
+  .hdr{background:#1565C0;color:white;padding:14px 16px;border-radius:var(--border-radius-lg);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+  .hdr h1{font-size:16px;font-weight:600;color:white;line-height:1.2;}
+  .hdr p{font-size:11px;opacity:.85;color:white;margin-top:2px;}
+  .tabs{display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap;}
+  .tab-btn{padding:7px 11px;border-radius:var(--border-radius-md);border:1.5px solid #1565C0;background:transparent;color:#1565C0;font-size:12px;cursor:pointer;font-weight:500;white-space:nowrap;}
+  .tab-btn.active{background:#1565C0;color:white;}
+  .sec{display:none;}.sec.active{display:block;}
+  .card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:16px;margin-bottom:12px;}
+  .card h2{font-size:14px;font-weight:600;color:#1565C0;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+  .frow.one{grid-template-columns:1fr;}.frow.three{grid-template-columns:1fr 1fr 1fr;}
+  .fg label{display:block;font-size:11px;color:var(--color-text-secondary);margin-bottom:3px;}
+  .fg input,.fg select,.fg textarea{width:100%;padding:8px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:14px;background:var(--color-background-primary);color:var(--color-text-primary);-webkit-appearance:none;}
+  .fg textarea{resize:vertical;min-height:60px;}
+  .btn-primary{background:#1565C0;color:white;border:none;padding:12px;border-radius:var(--border-radius-md);font-size:14px;font-weight:600;cursor:pointer;width:100%;margin-top:8px;}
+  .btn-sm{background:transparent;border:1px solid #1565C0;color:#1565C0;padding:6px 12px;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;}
+  .btn-warn{background:transparent;border:1px solid #FFA726;color:#854F0B;padding:6px 10px;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;}
+  .btn-edit{background:transparent;border:1px solid #1565C0;color:#1565C0;padding:6px 10px;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;}
+  .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+  .mcard{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center;}
+  .mlabel{font-size:10px;color:var(--color-text-secondary);margin-bottom:4px;}
+  .mval{font-size:22px;font-weight:600;color:#1565C0;}
+  .msub{font-size:10px;color:var(--color-text-tertiary);margin-top:2px;}
+  .chart-wrap{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:16px;margin-bottom:12px;}
+  .chart-wrap h3{font-size:13px;font-weight:600;color:var(--color-text-primary);margin-bottom:10px;}
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px;font-size:11px;color:var(--color-text-secondary);}
+  .legend span{display:flex;align-items:center;gap:4px;}
+  .ldot{width:8px;height:8px;border-radius:2px;}
+  .ftag{display:inline-flex;align-items:center;background:#E3F2FD;color:#0C447C;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:500;margin:2px;border:none;cursor:pointer;}
+  .ftag.active-tag{background:#1565C0;color:white;}
+  .ftag.archived{background:var(--color-background-secondary);color:var(--color-text-secondary);border:1px dashed var(--color-border-secondary);}
+  .prayer-list{list-style:none;}
+  .prayer-item{padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:12px;display:flex;align-items:flex-start;gap:7px;}
+  .prayer-item:last-child{border-bottom:none;}
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1565C0;color:white;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:500;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;white-space:nowrap;}
+  .toast.show{opacity:1;}
+  .list-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+  .list-row:last-child{border-bottom:none;}
+  .badge{font-size:10px;background:#E3F2FD;color:#0C447C;border-radius:10px;padding:2px 7px;}
+  .badge-arch{font-size:10px;background:var(--color-background-secondary);color:var(--color-text-secondary);border-radius:10px;padding:2px 7px;border:1px dashed var(--color-border-secondary);}
+  .empty{text-align:center;padding:20px;color:var(--color-text-secondary);font-size:13px;}
+  .clase-input{width:80px;padding:6px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:14px;background:var(--color-background-primary);color:var(--color-text-primary);text-align:center;}
+  .total-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;margin-top:4px;border-top:1px solid var(--color-border-secondary);}
+  .subtit{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin:12px 0 6px;display:flex;align-items:center;gap:5px;}
+  .pill-arch{font-size:10px;background:#FFF3E0;color:#854F0B;border-radius:8px;padding:1px 6px;}
+  .maestro-tag{font-size:11px;color:var(--color-text-secondary);display:flex;align-items:center;gap:3px;margin-top:2px;}
+  .edit-inline{display:none;gap:6px;margin-top:6px;align-items:center;flex-wrap:wrap;}
+  .edit-inline.open{display:flex;}
+  .edit-inline input{padding:6px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;background:var(--color-background-primary);color:var(--color-text-primary);flex:1;min-width:100px;}
+  .rep-row{display:flex;align-items:flex-start;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary);gap:8px;}
+  .rep-row:last-child{border-bottom:none;}
+  .rep-edit-panel{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;margin:6px 0 10px;display:none;}
+  .rep-edit-panel.open{display:block;}
+  .rep-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+  .rep-grid.three{grid-template-columns:1fr 1fr 1fr;}
+  .rep-grid label{font-size:11px;color:var(--color-text-secondary);display:block;margin-bottom:2px;}
+  .rep-grid input{width:100%;padding:6px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;background:var(--color-background-primary);color:var(--color-text-primary);}
+  .rep-grid textarea{width:100%;padding:6px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;background:var(--color-background-primary);color:var(--color-text-primary);resize:vertical;min-height:50px;}
+  .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--color-background-primary);border-top:0.5px solid var(--color-border-tertiary);display:flex;justify-content:space-around;padding:6px 0 max(6px,env(safe-area-inset-bottom));z-index:100;}
+  .bnav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 8px;border:none;background:transparent;color:var(--color-text-secondary);font-size:10px;cursor:pointer;min-width:44px;}
+  .bnav-btn.active{color:#1565C0;}
+  .bnav-btn i{font-size:22px;}
+  .install-banner{background:#E3F2FD;border:1px solid #90CAF9;border-radius:var(--border-radius-md);padding:12px;margin-bottom:14px;display:none;align-items:center;gap:10px;}
+  .install-banner p{font-size:12px;color:#0C447C;flex:1;}
+  .install-banner button{background:#1565C0;color:white;border:none;padding:6px 12px;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;white-space:nowrap;}
+</style>
+</head>
+<body>
+
+<div class="install-banner" id="install-banner">
+  <i class="ti ti-download" style="color:#1565C0;font-size:20px;" aria-hidden="true"></i>
+  <p>Instala esta app en tu iPhone: toca <strong>Compartir</strong> → <strong>Agregar a inicio</strong></p>
+  <button onclick="document.getElementById('install-banner').style.display='none'">OK</button>
+</div>
+
+<div class="hdr">
+  <i class="ti ti-building-church" style="font-size:24px;" aria-hidden="true"></i>
+  <div>
+    <h1>Iglesia Bautista Betel</h1>
+    <p id="hdr-fecha"></p>
+  </div>
+</div>
+
+<!-- REPORTAR -->
+<div id="tab-reportar" class="sec active">
+  <div class="card">
+    <h2><i class="ti ti-calendar" aria-hidden="true"></i> Semana</h2>
+    <div class="frow one"><div class="fg"><label>Fecha (domingo)</label><input type="date" id="f-fecha"/></div></div>
+  </div>
+  <div class="card">
+    <h2><i class="ti ti-users" aria-hidden="true"></i> Culto y visitantes</h2>
+    <div class="frow">
+      <div class="fg"><label>Asistentes al culto</label><input type="number" id="f-culto" min="0" placeholder="0" inputmode="numeric"/></div>
+      <div class="fg"><label>Visitantes dominicales</label><input type="number" id="f-vis-a" min="0" placeholder="0" inputmode="numeric"/></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2><i class="ti ti-school" aria-hidden="true"></i> Asistencia por clase</h2>
+    <div id="clases-form"></div>
+    <div class="total-row">
+      <span style="font-size:13px;font-weight:600;">Total clases</span>
+      <span id="total-clases-label" style="font-size:16px;font-weight:600;color:#1565C0;">0</span>
+    </div>
+  </div>
+  <div class="card">
+    <h2><i class="ti ti-world" aria-hidden="true"></i> Misiones y evangelismo</h2>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+      <label style="font-size:11px;color:var(--color-text-secondary);">Misión / casa:</label>
+      <select id="f-mis-sel" style="flex:1;padding:8px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:14px;background:var(--color-background-primary);color:var(--color-text-primary);-webkit-appearance:none;"></select>
+    </div>
+    <div class="frow three">
+      <div class="fg"><label>Asistencia</label><input type="number" id="f-asist-m" min="0" placeholder="0" inputmode="numeric"/></div>
+      <div class="fg"><label>Visitantes</label><input type="number" id="f-vis-m" min="0" placeholder="0" inputmode="numeric"/></div>
+      <div class="fg"><label>Fe</label><input type="number" id="f-fe" min="0" placeholder="0" inputmode="numeric"/></div>
+    </div>
+    <div class="frow one">
+      <div class="fg"><label>Motivos de oración</label><textarea id="f-oracion" placeholder="Motivos de oración..."></textarea></div>
+    </div>
+  </div>
+  <button class="btn-primary" onclick="guardar()"><i class="ti ti-device-floppy" aria-hidden="true"></i> Guardar reporte semanal</button>
+</div>
+
+<!-- CONFIGURAR -->
+<div id="tab-config" class="sec">
+  <div class="card">
+    <h2><i class="ti ti-school" aria-hidden="true"></i> Clases</h2>
+    <div class="frow one"><div class="fg"><label>Nombre de la clase</label><input type="text" id="nc-nombre" placeholder="Ej. Damas"/></div></div>
+    <div class="frow one"><div class="fg"><label>Maestro/a</label><input type="text" id="nc-maestro" placeholder="Nombre del maestro/a"/></div></div>
+    <button class="btn-primary" style="margin-top:0;" onclick="addClase()"><i class="ti ti-plus" aria-hidden="true"></i> Añadir clase</button>
+    <div class="subtit"><i class="ti ti-check" aria-hidden="true"></i> Clases activas</div>
+    <div id="clases-activas-lista"></div>
+    <div class="subtit" id="arch-cl-subtit" style="display:none;"><i class="ti ti-archive" aria-hidden="true"></i> Archivadas <span class="pill-arch">histórico preservado</span></div>
+    <div id="clases-archivadas-lista"></div>
+  </div>
+  <div class="card">
+    <h2><i class="ti ti-world" aria-hidden="true"></i> Misiones y casas</h2>
+    <div class="frow one"><div class="fg"><label>Nombre</label><input type="text" id="nm-nombre" placeholder="Nombre"/></div></div>
+    <div class="frow">
+      <div class="fg"><label>Responsable</label><input type="text" id="nm-resp" placeholder="Nombre"/></div>
+      <div class="fg"><label>Tipo</label>
+        <select id="nm-tipo" style="width:100%;padding:8px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:14px;background:var(--color-background-primary);color:var(--color-text-primary);-webkit-appearance:none;">
+          <option value="mision">Misión</option>
+          <option value="casa">Casa de oración</option>
+        </select>
+      </div>
+    </div>
+    <div class="frow one"><div class="fg"><label>Zona / descripción</label><input type="text" id="nm-desc" placeholder="Opcional"/></div></div>
+    <button class="btn-primary" style="margin-top:0;" onclick="addMision()"><i class="ti ti-plus" aria-hidden="true"></i> Añadir</button>
+    <div class="subtit"><i class="ti ti-map-pin" aria-hidden="true"></i> Misiones activas</div>
+    <div id="mis-activas-lista"></div>
+    <div class="subtit" id="arch-mis-subtit" style="display:none;"><i class="ti ti-archive" aria-hidden="true"></i> Misiones archivadas <span class="pill-arch">histórico</span></div>
+    <div id="mis-archivadas-lista"></div>
+    <div class="subtit"><i class="ti ti-home" aria-hidden="true"></i> Casas de oración</div>
+    <div id="casa-activas-lista"></div>
+    <div class="subtit" id="arch-casa-subtit" style="display:none;"><i class="ti ti-archive" aria-hidden="true"></i> Casas archivadas <span class="pill-arch">histórico</span></div>
+    <div id="casa-archivadas-lista"></div>
+  </div>
+</div>
+
+<!-- HISTORIAL -->
+<div id="tab-historial" class="sec">
+  <div class="card">
+    <h2><i class="ti ti-history" aria-hidden="true"></i> Reportes registrados</h2>
+    <div class="frow one" style="margin-bottom:10px;">
+      <div class="fg"><label>Filtrar</label>
+        <select id="h-mis-fil" style="width:100%;padding:8px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:14px;background:var(--color-background-primary);color:var(--color-text-primary);-webkit-appearance:none;" onchange="renderHistorial()"></select>
+      </div>
+    </div>
+    <div id="historial-lista"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD (gráficas) -->
+<div id="tab-dashboard" class="sec">
+  <div class="tabs" style="margin-bottom:12px;">
+    <button class="tab-btn active" id="d-tab-asis" onclick="showDashSec('asis',this)">Asistencia</button>
+    <button class="tab-btn" id="d-tab-clases" onclick="showDashSec('clases',this)">Clases</button>
+    <button class="tab-btn" id="d-tab-mis" onclick="showDashSec('mis',this)">Misiones</button>
+    <button class="tab-btn" id="d-tab-res" onclick="showDashSec('res',this)">Resumen</button>
+  </div>
+
+  <!-- ASISTENCIA -->
+  <div id="dsec-asis">
+    <div class="mgrid">
+      <div class="mcard"><div class="mlabel">Culto (última sem.)</div><div class="mval" id="m-culto">—</div></div>
+      <div class="mcard"><div class="mlabel">Visitantes (última sem.)</div><div class="mval" id="m-vis">—</div></div>
+      <div class="mcard"><div class="mlabel">Total clases (última sem.)</div><div class="mval" id="m-clases-tot">—</div></div>
+      <div class="mcard"><div class="mlabel">Semanas registradas</div><div class="mval" id="m-sems">0</div></div>
+    </div>
+    <div class="chart-wrap">
+      <h3>Culto y visitantes — 12 semanas</h3>
+      <div class="legend"><span><span class="ldot" style="background:#1565C0;"></span>Culto</span><span><span class="ldot" style="background:#90CAF9;"></span>Visitantes</span></div>
+      <div style="position:relative;width:100%;height:220px;"><canvas id="cA"></canvas></div>
+    </div>
+  </div>
+
+  <!-- CLASES -->
+  <div id="dsec-clases" style="display:none;">
+    <div class="mgrid">
+      <div class="mcard"><div class="mlabel">Total última sem.</div><div class="mval" id="ct-ult">—</div></div>
+      <div class="mcard"><div class="mlabel">Promedio 12 sem.</div><div class="mval" id="ct-prom">—</div></div>
+      <div class="mcard"><div class="mlabel">Máximo</div><div class="mval" id="ct-max">—</div></div>
+    </div>
+    <div class="chart-wrap">
+      <h3>Total clases — 12 semanas</h3>
+      <div style="position:relative;width:100%;height:220px;"><canvas id="cClTotal"></canvas></div>
+    </div>
+    <div class="chart-wrap">
+      <h3>Comparativo — última semana</h3>
+      <div style="position:relative;height:320px;"><canvas id="cClComp"></canvas></div>
+    </div>
+    <div class="chart-wrap">
+      <h3 id="clase-chart-title">Tendencia por clase</h3>
+      <div style="margin-bottom:8px;display:flex;flex-wrap:wrap;gap:4px;" id="clase-filtros"></div>
+      <div class="mgrid" style="margin-bottom:10px;">
+        <div class="mcard"><div class="mlabel">Última sem.</div><div class="mval" id="cd-ult">—</div></div>
+        <div class="mcard"><div class="mlabel">Promedio</div><div class="mval" id="cd-prom">—</div></div>
+      </div>
+      <div style="position:relative;width:100%;height:200px;"><canvas id="cCl"></canvas></div>
+    </div>
+  </div>
+
+  <!-- MISIONES -->
+  <div id="dsec-mis" style="display:none;">
+    <div style="margin-bottom:10px;">
+      <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:4px;">Misiones:</div>
+      <div id="mis-filtros-mis" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;"></div>
+      <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:4px;">Casas de oración:</div>
+      <div id="mis-filtros-casa" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;"></div>
+      <div id="arch-mis-dash-wrap" style="display:none;">
+        <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:4px;">Archivadas:</div>
+        <div id="mis-filtros-arch" style="display:flex;flex-wrap:wrap;gap:4px;"></div>
+      </div>
+    </div>
+    <div class="mgrid">
+      <div class="mcard"><div class="mlabel">Asistencia</div><div class="mval" id="md-asist">—</div></div>
+      <div class="mcard"><div class="mlabel">Visitantes</div><div class="mval" id="md-vis">—</div></div>
+      <div class="mcard"><div class="mlabel">Fe esta sem.</div><div class="mval" id="md-fe">—</div></div>
+      <div class="mcard"><div class="mlabel">Fe acumulado</div><div class="mval" id="md-fe-total">0</div></div>
+    </div>
+    <div class="chart-wrap">
+      <h3 id="mis-chart-title">Selecciona una misión</h3>
+      <div class="legend"><span><span class="ldot" style="background:#1565C0;"></span>Asist.</span><span><span class="ldot" style="background:#66BB6A;"></span>Visit.</span><span><span class="ldot" style="background:#FFA726;"></span>Fe</span></div>
+      <div style="position:relative;width:100%;height:220px;"><canvas id="cM"></canvas></div>
+    </div>
+    <div class="card">
+      <h2><i class="ti ti-heart" aria-hidden="true"></i> Motivos de oración</h2>
+      <ul class="prayer-list" id="prayer-list"><li class="prayer-item" style="color:var(--color-text-secondary);">Sin registros.</li></ul>
+    </div>
+  </div>
+
+  <!-- RESUMEN -->
+  <div id="dsec-res" style="display:none;">
+    <div class="mgrid">
+      <div class="mcard"><div class="mlabel">Culto (4 sem.)</div><div class="mval" id="r-culto">—</div></div>
+      <div class="mcard"><div class="mlabel">Prom. clases</div><div class="mval" id="r-clases">—</div></div>
+      <div class="mcard"><div class="mlabel">Asist. misiones</div><div class="mval" id="r-mis">—</div></div>
+      <div class="mcard"><div class="mlabel">Asist. casas</div><div class="mval" id="r-casa">—</div></div>
+      <div class="mcard"><div class="mlabel">Visitantes</div><div class="mval" id="r-vis">—</div></div>
+      <div class="mcard"><div class="mlabel">Fe global</div><div class="mval" id="r-fe">0</div></div>
+    </div>
+    <div class="chart-wrap">
+      <h3>Comparativo general — 12 semanas</h3>
+      <div class="legend" id="resumen-legend"></div>
+      <div style="position:relative;width:100%;height:280px;"><canvas id="cR"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" role="navigation" aria-label="Navegación principal">
+  <button class="bnav-btn active" id="bn-reportar" onclick="goTab('reportar',this)"><i class="ti ti-edit" aria-hidden="true"></i>Reportar</button>
+  <button class="bnav-btn" id="bn-historial" onclick="goTab('historial',this)"><i class="ti ti-history" aria-hidden="true"></i>Historial</button>
+  <button class="bnav-btn" id="bn-dashboard" onclick="goTab('dashboard',this)"><i class="ti ti-chart-bar" aria-hidden="true"></i>Dashboard</button>
+  <button class="bnav-btn" id="bn-config" onclick="goTab('config',this)"><i class="ti ti-settings" aria-hidden="true"></i>Configurar</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const N=12;
+const CLASES_DEFAULT=['Adultos solteros','Jóvenes','Matrimonios B','Adolescentes','Adultos mayores','Matrimonios A','Escolares I','Escolares II','Vida Cristiana','Matrimonios','Mayordomía','Evangelismo'];
+const KR='betel_r',KM='betel_m',KCL='betel_cl';
+let reps=[],misiones=[],clases=[],selMis=null,selClase=null;
+let chartA,chartM,chartR,chartCl,chartClComp,chartClTotal;
+let activeDashSec='asis';
+
+function load(){
+  try{reps=JSON.parse(localStorage.getItem(KR)||'[]');}catch(e){reps=[];}
+  try{misiones=JSON.parse(localStorage.getItem(KM)||'[]');}catch(e){misiones=[];}
+  try{
+    const cl=JSON.parse(localStorage.getItem(KCL)||'null');
+    clases=cl||CLASES_DEFAULT.map(n=>({id:'c'+n.replace(/\s/g,''),nombre:n,maestro:'',activa:true}));
+  }catch(e){clases=CLASES_DEFAULT.map(n=>({id:'c'+n.replace(/\s/g,''),nombre:n,maestro:'',activa:true}));}
+}
+function save(){
+  try{localStorage.setItem(KR,JSON.stringify(reps));localStorage.setItem(KM,JSON.stringify(misiones));localStorage.setItem(KCL,JSON.stringify(clases));}catch(e){}
+}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function fmtF(f){if(!f)return'';const[y,m,d]=f.split('-');return d+'/'+m+'/'+y.slice(2);}
+function clasesActivas(){return clases.filter(c=>c.activa);}
+function totalClasesRep(r){return clases.reduce((s,c)=>s+(r.clases?r.clases[c.id]||0:0),0);}
+function misPorTipo(tipo,soloActivas=true){return misiones.filter(m=>(soloActivas?m.activa!==false:true)&&(tipo==='mision'?(m.tipo==='mision'||!m.tipo):m.tipo===tipo));}
+function lastFechas(n){return[...new Set(reps.map(r=>r.fecha))].sort().slice(-n);}
+
+function goTab(name,btn){
+  ['reportar','config','historial','dashboard'].forEach(t=>{
+    const s=document.getElementById('tab-'+t);
+    if(s) s.classList.remove('active');
+  });
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
+  const sec=document.getElementById('tab-'+name);
+  if(sec) sec.classList.add('active');
+  const bnav=document.getElementById('bn-'+name);
+  if(bnav) bnav.classList.add('active');
+  if(name==='config'){renderClasesConfig();renderMisCatalog();}
+  if(name==='reportar'){refreshMisSelect();buildClasesForm();}
+  if(name==='historial'){refreshHistorialFiltro();renderHistorial();}
+  if(name==='dashboard') renderDashSec(activeDashSec);
+}
+
+function showDashSec(sec,btn){
+  ['asis','clases','mis','res'].forEach(s=>{
+    const el=document.getElementById('dsec-'+s);
+    if(el) el.style.display='none';
+  });
+  document.querySelectorAll('#tab-dashboard .tabs .tab-btn').forEach(b=>b.classList.remove('active'));
+  const el=document.getElementById('dsec-'+sec);
+  if(el) el.style.display='block';
+  if(btn) btn.classList.add('active');
+  activeDashSec=sec;
+  renderDashSec(sec);
+}
+
+function renderDashSec(sec){
+  if(sec==='asis') renderAsistencia();
+  if(sec==='clases') renderClasesDash();
+  if(sec==='mis') renderMisDash();
+  if(sec==='res') renderResumen();
+}
+
+function buildClasesForm(){
+  const activas=clasesActivas();
+  document.getElementById('clases-form').innerHTML=activas.map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary);"><div><span style="font-size:14px;">${c.nombre}</span>${c.maestro?`<div class="maestro-tag"><i class="ti ti-user" aria-hidden="true"></i>${c.maestro}</div>`:''}</div><input class="clase-input" type="number" min="0" placeholder="0" inputmode="numeric" id="cl-${c.id}" oninput="updateTotalClases()"/></div>`).join('');
+  if(!activas.length) document.getElementById('clases-form').innerHTML='<div class="empty">Sin clases activas.</div>';
+  updateTotalClases();
+}
+function updateTotalClases(){
+  const t=clasesActivas().reduce((s,c)=>{const e=document.getElementById('cl-'+c.id);return s+(e?parseInt(e.value)||0:0);},0);
+  document.getElementById('total-clases-label').textContent=t;
+}
+function getClasesValues(){
+  const obj={};clases.forEach(c=>{const e=document.getElementById('cl-'+c.id);obj[c.id]=e?parseInt(e.value)||0:0;});return obj;
+}
+function guardar(){
+  const fecha=document.getElementById('f-fecha').value;
+  if(!fecha){toast('Selecciona la fecha del domingo.');return;}
+  const misId=document.getElementById('f-mis-sel').value;
+  const misNombre=misId?(misiones.find(m=>m.id===misId)||{}).nombre||'':'';
+  const reg={id:'r'+Date.now(),fecha,culto:parseInt(document.getElementById('f-culto').value)||0,visA:parseInt(document.getElementById('f-vis-a').value)||0,clases:getClasesValues(),misId,misNombre,asistM:parseInt(document.getElementById('f-asist-m').value)||0,visM:parseInt(document.getElementById('f-vis-m').value)||0,fe:parseInt(document.getElementById('f-fe').value)||0,oracion:document.getElementById('f-oracion').value.trim()};
+  const idx=reps.findIndex(r=>r.fecha===fecha&&r.misId===misId);
+  if(idx>=0){reg.id=reps[idx].id;reps[idx]=reg;}else{reps.push(reg);}
+  reps.sort((a,b)=>a.fecha.localeCompare(b.fecha));
+  save();toast('✓ Reporte guardado.');
+  ['f-culto','f-vis-a','f-asist-m','f-vis-m','f-fe','f-oracion'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  clasesActivas().forEach(c=>{const e=document.getElementById('cl-'+c.id);if(e)e.value='';});
+  updateTotalClases();
+}
+function refreshMisSelect(){
+  const sel=document.getElementById('f-mis-sel');const prev=sel.value;
+  sel.innerHTML='<option value="">— Selecciona —</option>';
+  const mis=misPorTipo('mision'),casas=misPorTipo('casa');
+  if(mis.length){const og=document.createElement('optgroup');og.label='Misiones';mis.forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.nombre;og.appendChild(o);});sel.appendChild(og);}
+  if(casas.length){const og=document.createElement('optgroup');og.label='Casas de oración';casas.forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.nombre;og.appendChild(o);});sel.appendChild(og);}
+  if(prev) sel.value=prev;
+}
+function refreshHistorialFiltro(){
+  const sel=document.getElementById('h-mis-fil');
+  sel.innerHTML='<option value="">Todos</option><option value="__general__">Solo generales</option>';
+  misiones.forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=(m.tipo==='casa'?'Casa: ':'Mis: ')+m.nombre+(m.activa?'':' ✕');sel.appendChild(o);});
+}
+function renderHistorial(){
+  const fil=document.getElementById('h-mis-fil').value;
+  let lista=[...reps].sort((a,b)=>b.fecha.localeCompare(a.fecha));
+  if(fil==='__general__') lista=lista.filter(r=>!r.misId);
+  else if(fil) lista=lista.filter(r=>r.misId===fil);
+  const el=document.getElementById('historial-lista');
+  if(!lista.length){el.innerHTML='<div class="empty">Sin reportes registrados.</div>';return;}
+  el.innerHTML=lista.map(r=>{
+    const mis=r.misId?misiones.find(m=>m.id===r.misId):null;
+    const misLabel=mis?(mis.tipo==='casa'?'Casa: ':'Mis: ')+mis.nombre:'General';
+    return`<div class="rep-row">
+      <div style="flex:1;">
+        <span style="font-weight:600;">${fmtF(r.fecha)}</span>
+        <span style="font-size:11px;color:var(--color-text-secondary);margin-left:6px;">${misLabel}</span>
+        <div style="font-size:11px;color:var(--color-text-secondary);margin-top:2px;">Culto: ${r.culto} · Clases: ${totalClasesRep(r)} · Vis: ${r.visA}${r.misId?' · Asist: '+r.asistM+' · Fe: '+r.fe:''}</div>
+      </div>
+      <button class="btn-edit" onclick="toggleEditRep('${r.id}')"><i class="ti ti-edit" aria-hidden="true"></i></button>
+    </div>
+    <div class="rep-edit-panel" id="ep-${r.id}">
+      <div style="font-size:13px;font-weight:600;color:#1565C0;margin-bottom:10px;">Editando: ${fmtF(r.fecha)}</div>
+      <div class="rep-grid">
+        <div><label>Culto</label><input type="number" id="ep-culto-${r.id}" value="${r.culto}" min="0" inputmode="numeric"/></div>
+        <div><label>Visitantes</label><input type="number" id="ep-visa-${r.id}" value="${r.visA}" min="0" inputmode="numeric"/></div>
+      </div>
+      <div style="font-size:11px;font-weight:600;color:var(--color-text-secondary);margin:8px 0 6px;">Clases:</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
+        ${clases.map(c=>`<div><label style="font-size:10px;color:var(--color-text-secondary);display:block;margin-bottom:2px;">${c.nombre}</label><input type="number" id="ep-cl-${r.id}-${c.id}" value="${r.clases?r.clases[c.id]||0:0}" min="0" inputmode="numeric" style="width:100%;padding:5px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;background:var(--color-background-primary);color:var(--color-text-primary);"/></div>`).join('')}
+      </div>
+      ${r.misId?`<div style="font-size:11px;font-weight:600;color:var(--color-text-secondary);margin:8px 0 6px;">Misión / Casa:</div>
+      <div class="rep-grid three">
+        <div><label>Asistencia</label><input type="number" id="ep-asistm-${r.id}" value="${r.asistM}" min="0" inputmode="numeric"/></div>
+        <div><label>Visitantes</label><input type="number" id="ep-vism-${r.id}" value="${r.visM}" min="0" inputmode="numeric"/></div>
+        <div><label>Fe</label><input type="number" id="ep-fe-${r.id}" value="${r.fe}" min="0" inputmode="numeric"/></div>
+      </div>
+      <div style="margin-top:6px;"><label style="font-size:10px;color:var(--color-text-secondary);display:block;margin-bottom:2px;">Motivos de oración</label><textarea id="ep-ora-${r.id}" style="width:100%;padding:6px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;background:var(--color-background-primary);color:var(--color-text-primary);resize:vertical;min-height:50px;">${r.oracion||''}</textarea></div>`:''}
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button class="btn-primary" style="margin-top:0;flex:1;" onclick="guardarEdicion('${r.id}')"><i class="ti ti-check" aria-hidden="true"></i> Guardar</button>
+        <button class="btn-sm" onclick="toggleEditRep('${r.id}')">Cancelar</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function toggleEditRep(id){document.getElementById('ep-'+id).classList.toggle('open');}
+function guardarEdicion(id){
+  const idx=reps.findIndex(r=>r.id===id);if(idx<0)return;
+  const r=reps[idx];
+  r.culto=parseInt(document.getElementById('ep-culto-'+id).value)||0;
+  r.visA=parseInt(document.getElementById('ep-visa-'+id).value)||0;
+  clases.forEach(c=>{const e=document.getElementById('ep-cl-'+id+'-'+c.id);if(!r.clases)r.clases={};r.clases[c.id]=e?parseInt(e.value)||0:0;});
+  if(r.misId){r.asistM=parseInt(document.getElementById('ep-asistm-'+id).value)||0;r.visM=parseInt(document.getElementById('ep-vism-'+id).value)||0;r.fe=parseInt(document.getElementById('ep-fe-'+id).value)||0;r.oracion=document.getElementById('ep-ora-'+id).value.trim();}
+  save();toast('✓ Reporte actualizado.');
+  document.getElementById('ep-'+id).classList.remove('open');
+  renderHistorial();
+}
+function addClase(){
+  const n=document.getElementById('nc-nombre').value.trim();
+  const mae=document.getElementById('nc-maestro').value.trim();
+  if(!n){toast('Escribe el nombre.');return;}
+  if(clases.find(c=>c.nombre.toLowerCase()===n.toLowerCase()&&c.activa)){toast('Ya existe esa clase.');return;}
+  const ex=clases.find(c=>c.nombre.toLowerCase()===n.toLowerCase());
+  if(ex){ex.activa=true;if(mae)ex.maestro=mae;}else{clases.push({id:'c'+Date.now(),nombre:n,maestro:mae,activa:true});}
+  save();renderClasesConfig();buildClasesForm();
+  document.getElementById('nc-nombre').value='';document.getElementById('nc-maestro').value='';
+  toast('Clase añadida.');
+}
+function editarMaestro(id){document.getElementById('edit-mae-'+id).classList.toggle('open');}
+function guardarMaestro(id){
+  const c=clases.find(x=>x.id===id);if(!c)return;
+  c.maestro=document.getElementById('inp-mae-'+id).value.trim();
+  save();renderClasesConfig();buildClasesForm();toast('Maestro actualizado.');
+}
+function archivarClase(id){const c=clases.find(x=>x.id===id);if(!c)return;c.activa=false;save();renderClasesConfig();buildClasesForm();toast('Clase archivada.');}
+function restaurarClase(id){const c=clases.find(x=>x.id===id);if(!c)return;c.activa=true;save();renderClasesConfig();buildClasesForm();toast('Clase restaurada.');}
+function renderClasesConfig(){
+  const act=clases.filter(c=>c.activa),arch=clases.filter(c=>!c.activa);
+  document.getElementById('clases-activas-lista').innerHTML=act.length?act.map(c=>`<div class="list-row" style="flex-direction:column;align-items:flex-start;"><div style="display:flex;align-items:center;justify-content:space-between;width:100%;"><div><span style="font-size:13px;font-weight:500;">${c.nombre}</span>${c.maestro?`<div class="maestro-tag"><i class="ti ti-user" aria-hidden="true"></i>${c.maestro}</div>`:'<div style="font-size:10px;color:var(--color-text-tertiary);">Sin maestro</div>'}</div><div style="display:flex;gap:5px;"><button class="btn-edit" onclick="editarMaestro('${c.id}')"><i class="ti ti-user-edit" aria-hidden="true"></i></button><button class="btn-warn" onclick="archivarClase('${c.id}')"><i class="ti ti-archive" aria-hidden="true"></i></button></div></div><div class="edit-inline" id="edit-mae-${c.id}"><input type="text" id="inp-mae-${c.id}" value="${c.maestro||''}" placeholder="Nombre del maestro/a"/><button class="btn-sm" onclick="guardarMaestro('${c.id}')"><i class="ti ti-check" aria-hidden="true"></i></button><button class="btn-sm" onclick="editarMaestro('${c.id}')">✕</button></div></div>`).join(''):'<div class="empty">Sin clases activas.</div>';
+  document.getElementById('arch-cl-subtit').style.display=arch.length?'flex':'none';
+  document.getElementById('clases-archivadas-lista').innerHTML=arch.map(c=>`<div class="list-row"><span style="font-size:13px;color:var(--color-text-secondary);">${c.nombre}${c.maestro?' · '+c.maestro:''} <span class="pill-arch">arch.</span></span><button class="btn-sm" onclick="restaurarClase('${c.id}')"><i class="ti ti-restore" aria-hidden="true"></i></button></div>`).join('');
+}
+function addMision(){
+  const n=document.getElementById('nm-nombre').value.trim();
+  if(!n){toast('Escribe un nombre.');return;}
+  const tipo=document.getElementById('nm-tipo').value;
+  misiones.push({id:'m'+Date.now(),nombre:n,responsable:document.getElementById('nm-resp').value.trim(),desc:document.getElementById('nm-desc').value.trim(),tipo,activa:true});
+  save();renderMisCatalog();refreshMisSelect();
+  document.getElementById('nm-nombre').value='';document.getElementById('nm-resp').value='';document.getElementById('nm-desc').value='';
+  toast((tipo==='casa'?'Casa':'Misión')+' registrada.');
+}
+function archivarMision(id){const m=misiones.find(x=>x.id===id);if(!m)return;m.activa=false;save();renderMisCatalog();refreshMisSelect();toast('"'+m.nombre+'" archivada.');}
+function restaurarMision(id){const m=misiones.find(x=>x.id===id);if(!m)return;m.activa=true;save();renderMisCatalog();refreshMisSelect();toast('"'+m.nombre+'" restaurada.');}
+function renderMisList(act,arch,elAct,elArch,subtitId){
+  const cnt=m=>reps.filter(r=>r.misId===m.id).length;
+  document.getElementById(elAct).innerHTML=act.length?act.map(m=>`<div class="list-row"><div><div style="font-size:13px;font-weight:500;">${m.nombre}</div><div style="font-size:11px;color:var(--color-text-secondary);">${m.responsable||''}${m.desc?' · '+m.desc:''}</div></div><div style="display:flex;gap:5px;align-items:center;"><span class="badge">${cnt(m)}</span><button class="btn-warn" onclick="archivarMision('${m.id}')"><i class="ti ti-archive" aria-hidden="true"></i></button></div></div>`).join(''):'<div class="empty">Sin registros activos.</div>';
+  document.getElementById(subtitId).style.display=arch.length?'flex':'none';
+  document.getElementById(elArch).innerHTML=arch.map(m=>`<div class="list-row"><div><div style="font-size:13px;color:var(--color-text-secondary);">${m.nombre} <span class="pill-arch">arch.</span></div></div><div style="display:flex;gap:5px;"><span class="badge-arch">${cnt(m)}</span><button class="btn-sm" onclick="restaurarMision('${m.id}')"><i class="ti ti-restore" aria-hidden="true"></i></button></div></div>`).join('');
+}
+function renderMisCatalog(){
+  renderMisList(misPorTipo('mision'),misPorTipo('mision',false).filter(m=>!m.activa),'mis-activas-lista','mis-archivadas-lista','arch-mis-subtit');
+  renderMisList(misPorTipo('casa'),misPorTipo('casa',false).filter(m=>!m.activa),'casa-activas-lista','casa-archivadas-lista','arch-casa-subtit');
+}
+function mkChart(id,type,labels,datasets,opts={}){
+  const el=document.getElementById(id);if(!el)return null;
+  const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{autoSkip:true,maxRotation:45,maxTicksLimit:6,font:{size:9}}},y:{beginAtZero:true,ticks:{font:{size:9}}}}};
+  return new Chart(el,{type,data:{labels,datasets},options:{...base,...opts}});
+}
+function renderAsistencia(){
+  const fechas=lastFechas(N);const ultimo=fechas[fechas.length-1];const uR=ultimo?reps.filter(r=>r.fecha===ultimo):[];
+  document.getElementById('m-culto').textContent=uR.length?uR.reduce((s,r)=>s+r.culto,0):'—';
+  document.getElementById('m-vis').textContent=uR.length?uR.reduce((s,r)=>s+r.visA,0):'—';
+  document.getElementById('m-clases-tot').textContent=uR.length?uR.reduce((s,r)=>s+totalClasesRep(r),0):'—';
+  document.getElementById('m-sems').textContent=[...new Set(reps.map(r=>r.fecha))].length;
+  if(chartA) chartA.destroy();
+  if(!fechas.length) return;
+  chartA=mkChart('cA','line',fechas.map(fmtF),[
+    {label:'Culto',data:fechas.map(f=>reps.filter(r=>r.fecha===f).reduce((s,r)=>s+r.culto,0)),borderColor:'#1565C0',backgroundColor:'rgba(21,101,192,.1)',borderWidth:2,tension:.3,fill:true},
+    {label:'Visitantes',data:fechas.map(f=>reps.filter(r=>r.fecha===f).reduce((s,r)=>s+r.visA,0)),borderColor:'#90CAF9',backgroundColor:'rgba(144,202,249,.1)',borderWidth:2,tension:.3,fill:true}
+  ]);
+}
+function renderClasesDash(){
+  const fechas=lastFechas(N);
+  const totales=fechas.map(f=>reps.filter(r=>r.fecha===f).reduce((s,r)=>s+totalClasesRep(r),0));
+  const nz=totales.filter(v=>v>0);
+  document.getElementById('ct-ult').textContent=totales.length?totales[totales.length-1]:'—';
+  document.getElementById('ct-prom').textContent=nz.length?Math.round(nz.reduce((s,v)=>s+v,0)/nz.length):'—';
+  document.getElementById('ct-max').textContent=nz.length?Math.max(...nz):'—';
+  if(chartClTotal) chartClTotal.destroy();
+  if(fechas.length) chartClTotal=mkChart('cClTotal','line',fechas.map(fmtF),[{label:'Total',data:totales,borderColor:'#1565C0',backgroundColor:'rgba(21,101,192,.1)',borderWidth:2.5,tension:.35,fill:true,pointRadius:3,pointBackgroundColor:'#1565C0'}]);
+  const ultimo=fechas[fechas.length-1];
+  if(chartClComp) chartClComp.destroy();
+  if(ultimo) chartClComp=mkChart('cClComp','bar',clases.map(c=>c.nombre.length>10?c.nombre.slice(0,10)+'…':c.nombre),[{label:'Asistencia',data:clases.map(c=>reps.filter(r=>r.fecha===ultimo).reduce((s,r)=>s+(r.clases?r.clases[c.id]||0:0),0)),backgroundColor:clases.map(c=>c.activa?'rgba(21,101,192,.7)':'rgba(150,150,150,.3)'),borderRadius:3}],{indexAxis:'y',scales:{x:{beginAtZero:true,ticks:{font:{size:9}}},y:{ticks:{font:{size:9}}}}});
+  if(!selClase&&clases.length) selClase=clasesActivas()[0]?.id||clases[0].id;
+  const selC=clases.find(c=>c.id===selClase);
+  document.getElementById('clase-chart-title').textContent='Tendencia: '+(selC?selC.nombre:'');
+  const filtros=document.getElementById('clase-filtros');filtros.innerHTML='';
+  clases.forEach(c=>{const btn=document.createElement('button');btn.className='ftag'+(c.id===selClase?' active-tag':'')+(c.activa?'':' archived');btn.textContent=c.nombre;btn.onclick=()=>{selClase=c.id;renderClasesDash();};filtros.appendChild(btn);});
+  const dataClase=fechas.map(f=>reps.filter(r=>r.fecha===f).reduce((s,r)=>s+(r.clases?r.clases[selClase]||0:0),0));
+  const nzC=dataClase.filter(v=>v>0);
+  document.getElementById('cd-ult').textContent=dataClase.length?dataClase[dataClase.length-1]:'—';
+  document.getElementById('cd-prom').textContent=nzC.length?Math.round(nzC.reduce((s,v)=>s+v,0)/nzC.length):'—';
+  if(chartCl) chartCl.destroy();
+  if(fechas.length) chartCl=mkChart('cCl','line',fechas.map(fmtF),[{label:selC?selC.nombre:'',data:dataClase,borderColor:'#1565C0',backgroundColor:'rgba(21,101,192,.1)',borderWidth:2,tension:.3,fill:true,pointRadius:3,pointBackgroundColor:'#1565C0'}]);
+}
+function renderMisDash(){
+  const misAct=misPorTipo('mision'),casasAct=misPorTipo('casa');
+  const arch=[...misPorTipo('mision',false).filter(m=>!m.activa),...misPorTipo('casa',false).filter(m=>!m.activa)];
+  const elMis=document.getElementById('mis-filtros-mis'),elCasa=document.getElementById('mis-filtros-casa'),elArch=document.getElementById('mis-filtros-arch');
+  elMis.innerHTML='';elCasa.innerHTML='';elArch.innerHTML='';
+  const todas=[...misAct,...casasAct,...arch];
+  if(!todas.length){elMis.innerHTML='<span style="font-size:13px;color:var(--color-text-secondary);">Sin misiones.</span>';return;}
+  if(!selMis) selMis=todas[0].id;
+  misAct.forEach(m=>{const b=document.createElement('button');b.className='ftag'+(selMis===m.id?' active-tag':'');b.textContent=m.nombre;b.onclick=()=>{selMis=m.id;renderMisDash();};elMis.appendChild(b);});
+  casasAct.forEach(m=>{const b=document.createElement('button');b.className='ftag'+(selMis===m.id?' active-tag':'');b.textContent=m.nombre;b.onclick=()=>{selMis=m.id;renderMisDash();};elCasa.appendChild(b);});
+  arch.forEach(m=>{const b=document.createElement('button');b.className='ftag archived'+(selMis===m.id?' active-tag':'');b.textContent=m.nombre+' ✕';b.onclick=()=>{selMis=m.id;renderMisDash();};elArch.appendChild(b);});
+  if(!misAct.length) elMis.innerHTML='<span style="font-size:11px;color:var(--color-text-secondary);">Sin misiones activas.</span>';
+  if(!casasAct.length) elCasa.innerHTML='<span style="font-size:11px;color:var(--color-text-secondary);">Sin casas activas.</span>';
+  document.getElementById('arch-mis-dash-wrap').style.display=arch.length?'block':'none';
+  const mis=misiones.find(m=>m.id===selMis);
+  document.getElementById('mis-chart-title').textContent=mis?(mis.tipo==='casa'?'Casa: ':'Misión: ')+mis.nombre+(mis.activa?'':' (arch.)'):'—';
+  const misReps=reps.filter(r=>r.misId===selMis).sort((a,b)=>a.fecha.localeCompare(b.fecha)).slice(-N);
+  const ultimo=misReps[misReps.length-1];
+  document.getElementById('md-asist').textContent=ultimo?ultimo.asistM:'—';
+  document.getElementById('md-vis').textContent=ultimo?ultimo.visM:'—';
+  document.getElementById('md-fe').textContent=ultimo?ultimo.fe:'—';
+  document.getElementById('md-fe-total').textContent=misReps.reduce((s,r)=>s+r.fe,0);
+  if(chartM) chartM.destroy();
+  if(misReps.length) chartM=mkChart('cM','line',misReps.map(r=>fmtF(r.fecha)),[
+    {label:'Asistencia',data:misReps.map(r=>r.asistM),borderColor:'#1565C0',backgroundColor:'rgba(21,101,192,.1)',borderWidth:2,tension:.3,fill:true},
+    {label:'Visitantes',data:misReps.map(r=>r.visM),borderColor:'#66BB6A',backgroundColor:'rgba(102,187,106,.1)',borderWidth:2,tension:.3,fill:true},
+    {label:'Fe',data:misReps.map(r=>r.fe),borderColor:'#FFA726',backgroundColor:'rgba(255,167,38,.1)',borderWidth:2,tension:.3,fill:true,borderDash:[5,3]}
+  ]);
+  const conOra=misReps.filter(r=>r.oracion).slice(-5).reverse();
+  document.getElementById('prayer-list').innerHTML=conOra.length?conOra.map(r=>`<li class="prayer-item"><i class="ti ti-heart" style="color:#1565C0;font-size:14px;flex-shrink:0;" aria-hidden="true"></i><span><strong style="font-size:10px;color:var(--color-text-secondary);">${fmtF(r.fecha)}</strong><br>${r.oracion}</span></li>`).join(''):'<li class="prayer-item" style="color:var(--color-text-secondary);">Sin motivos.</li>';
+}
+function renderResumen(){
+  const fechas=[...new Set(reps.map(r=>r.fecha))].sort();
+  const u4=fechas.slice(-4),u12=fechas.slice(-N);
+  const sumF=(arr,key)=>arr.reduce((s,f)=>s+reps.filter(r=>r.fecha===f).reduce((ss,r)=>ss+r[key],0),0);
+  document.getElementById('r-culto').textContent=u4.length?sumF(u4,'culto'):'—';
+  const cl4=u4.map(f=>reps.filter(r=>r.fecha===f).reduce((s,r)=>s+totalClasesRep(r),0));
+  document.getElementById('r-clases').textContent=cl4.length?Math.round(cl4.reduce((s,v)=>s+v,0)/cl4.length):'—';
+  document.getElementById('r-vis').textContent=u4.length?sumF(u4,'visA'):'—';
+  document.getElementById('r-fe').textContent=reps.reduce((s,r)=>s+r.fe,0);
+  const misAct=misPorTipo('mision'),casasAct=misPorTipo('casa');
+  document.getElementById('r-mis').textContent=u4.length?u4.reduce((s,f)=>s+reps.filter(r=>r.fecha===f&&misAct.some(m=>m.id===r.misId)).reduce((ss,r)=>ss+r.asistM,0),0):'—';
+  document.getElementById('r-casa').textContent=u4.length?u4.reduce((s,f)=>s+reps.filter(r=>r.fecha===f&&casasAct.some(m=>m.id===r.misId)).reduce((ss,r)=>ss+r.asistM,0),0):'—';
+  if(chartR) chartR.destroy();
+  if(!u12.length) return;
+  const colMis=['rgba(102,187,106,.85)','rgba(56,142,60,.85)','rgba(129,199,132,.85)','rgba(27,94,32,.85)'];
+  const colCasa=['rgba(255,167,38,.85)','rgba(239,108,0,.85)','rgba(255,204,128,.85)'];
+  const datasets=[
+    {label:'Culto',data:u12.map(f=>reps.filter(r=>r.fecha===f).reduce((s,r)=>s+r.culto,0)),backgroundColor:'rgba(21,101,192,.8)',borderColor:'#1565C0',borderWidth:1},
+    {label:'Total clases',data:u12.map(f=>reps.filter(r=>r.fecha===f).reduce((s,r)=>s+totalClasesRep(r),0)),backgroundColor:'rgba(66,165,245,.8)',borderColor:'#42A5F5',borderWidth:1},
+    ...misAct.map((m,i)=>({label:'Mis: '+m.nombre,data:u12.map(f=>reps.filter(r=>r.fecha===f&&r.misId===m.id).reduce((s,r)=>s+r.asistM,0)),backgroundColor:colMis[i%colMis.length],borderColor:colMis[i%colMis.length],borderWidth:1})),
+    ...casasAct.map((m,i)=>({label:'Casa: '+m.nombre,data:u12.map(f=>reps.filter(r=>r.fecha===f&&r.misId===m.id).reduce((s,r)=>s+r.asistM,0)),backgroundColor:colCasa[i%colCasa.length],borderColor:colCasa[i%colCasa.length],borderWidth:1}))
+  ];
+  chartR=mkChart('cR','bar',u12.map(fmtF),datasets,{scales:{x:{ticks:{autoSkip:true,maxTicksLimit:6,maxRotation:45,font:{size:9}}},y:{beginAtZero:true,ticks:{font:{size:9}}}}});
+  document.getElementById('resumen-legend').innerHTML=[{color:'rgba(21,101,192,.8)',label:'Culto'},{color:'rgba(66,165,245,.8)',label:'Clases'},...misAct.map((m,i)=>({color:colMis[i%colMis.length],label:'Mis: '+m.nombre})),...casasAct.map((m,i)=>({color:colCasa[i%colCasa.length],label:'Casa: '+m.nombre}))].map(l=>`<span><span class="ldot" style="background:${l.color};"></span>${l.label}</span>`).join('');
+}
+function init(){
+  load();
+  // Mostrar banner de instalación si no está instalado
+  if(!window.matchMedia('(display-mode: standalone)').matches && /iPhone|iPad|iPod/.test(navigator.userAgent)){
+    document.getElementById('install-banner').style.display='flex';
+  }
+  const hoy=new Date();
+  document.getElementById('hdr-fecha').textContent=hoy.toLocaleDateString('es-MX',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const d=new Date(),day=d.getDay(),diff=d.getDate()-day+(day===0?0:7);
+  document.getElementById('f-fecha').value=new Date(d.setDate(diff)).toISOString().split('T')[0];
+  buildClasesForm();refreshMisSelect();
+  // Registrar service worker
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  }
+}
+init();
+</script>
+</body>
+</html>
